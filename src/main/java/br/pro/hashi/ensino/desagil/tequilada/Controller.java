@@ -5,49 +5,59 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+//A expressão "implements ActionListener" estabelece
+//que objetos dessa classe podem reagir ao relógio.
 public class Controller implements ActionListener, KeyListener {
 	private Model model;
 	private View view;
-	
-	public Controller(Model model, View view){
+
+	public Controller(Model model, View view) {
 		this.model = model;
-		this.view =  view;
+		this.view = view;
 	}
+
+	// Esse método especial, que a expressão "implements ActionListener"
+	// obriga a ter, é o método chamado pelo relógio a cada segundo.
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent event) {
 		model.update();
 		view.repaint();
 	}
-	
+
+	// Esses métodos especiais, que a expressão "implements KeyListener"
+	// obriga a ter, são os métodos chamados em reação ao teclado.
 	@Override
 	public void keyPressed(KeyEvent event) {
-		// TODO Auto-generated method stub
-		if(event.getKeyCode() == KeyEvent.VK_S){
-			model.getHumanPlayer().move(1,0);
+		Board board = model.getBoard();
+		Player humanPlayer = model.getHumanPlayer();
+		int row = humanPlayer.getRow();
+		int col = humanPlayer.getCol();
+
+		if(event.getKeyCode() == KeyEvent.VK_UP) {
+			if(row > 0 && !board.isWall(row - 1, col)) {
+				humanPlayer.move(-1, 0);
+			}
 		}
-		
-		if(event.getKeyCode() == KeyEvent.VK_W){
-			model.getHumanPlayer().move(-1,0);
+		if(event.getKeyCode() == KeyEvent.VK_LEFT) {
+			if(col > 0 && !board.isWall(row, col - 1)) {
+				humanPlayer.move(0, -1);
+			}
 		}
-			
-		if(event.getKeyCode() == KeyEvent.VK_A){
-			model.getHumanPlayer().move(0,-1);
+		if(event.getKeyCode() == KeyEvent.VK_DOWN) {
+			if(row < board.getNumRows() - 1 && !board.isWall(row + 1, col)) {
+				humanPlayer.move(1, 0);
+			}
 		}
-		if(event.getKeyCode() == KeyEvent.VK_D){
-			model.getHumanPlayer().move(0,1);
+		if(event.getKeyCode() == KeyEvent.VK_RIGHT) {
+			if(col < board.getNumCols() - 1 && !board.isWall(row, col + 1)) {
+				humanPlayer.move(0, 1);
+			}
 		}
 	}
-			
-		
 	@Override
 	public void keyReleased(KeyEvent event) {
-		// TODO Auto-generated method stub
-		
 	}
 	@Override
 	public void keyTyped(KeyEvent event) {
-		// TODO Auto-generated method stub
-		
 	}
-	
 }

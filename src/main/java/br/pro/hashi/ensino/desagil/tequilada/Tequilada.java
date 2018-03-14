@@ -3,49 +3,49 @@ package br.pro.hashi.ensino.desagil.tequilada;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-// Estrutura b·sica de um programa Java.
+// Estrutura b√°sica de um programa Java.
 public class Tequilada {
-	// Estrutura b·sica de um programa Java.
+	// Estrutura b√°sica de um programa Java.
 	public static void main(String[] args) {
-		// Estrutura b·sica de um programa Swing.
+		// Estrutura b√°sica de um programa Swing.
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			// Estrutura b·sica de um programa Swing.
+			// Estrutura b√°sica de um programa Swing.
             public void run() {
-            	// ConstrÛi o modelo.
+            	// Constr√≥i o modelo.
             	Model model = new Model();
 
-            	// ConstrÛi a vis„o.
+            	// Constr√≥i a vis√£o.
             	View view = new View(model);
 
-            	// ConstrÛi o controlador.
+            	// Constr√≥i o controlador.
             	Controller controller = new Controller(model, view);
 
-            	// ConstrÛi a janela.
+            	// Constr√≥i a janela.
             	JFrame frame = new JFrame();
 
-            	// Coloca a vis„o dentro da janela.
+            	// Adiciona o controlador como observador do teclado.
+            	frame.addKeyListener(controller);
+
+            	// Coloca a vis√£o dentro da janela.
             	frame.setContentPane(view);
 
             	// Configura a janela para encerrar o programa quando for fechada.
             	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            	// Configura a janela para n„o ser redimension·vel.
+            	// Configura a janela para n√£o ser redimension√°vel.
             	frame.setResizable(false);
 
-            	// Redimensiona a janela de acordo com o tamanho do conte˙do.
+            	// Redimensiona a janela de acordo com o tamanho do conte√∫do.
             	frame.pack();
 
             	// Exibe a janela.
             	frame.setVisible(true);
-            	
-            	frame.addKeyListener(controller);
-            	
-            	Timer timer = new Timer(100,controller);
-            	
+
+            	// Cria o relogio
+            	Timer timer = new Timer(100, controller);
+
+            	// Inicia o relogio
             	timer.start();
-            	
-            	
-            	
             }
         });
 	}

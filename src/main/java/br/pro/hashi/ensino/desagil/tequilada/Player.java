@@ -1,24 +1,22 @@
 package br.pro.hashi.ensino.desagil.tequilada;
 
-public class Player {
-	protected int row;
-	protected int col;
+public abstract class Player extends Element {
+	protected int score;
 	
-	public Player(int row, int col){
-		this.row = row;
-		this.col = col;
+	protected Player(int row, int col) {
+		super(row, col);
+		score = 0;
+	}
+
+	public void move(int rowShift, int colShift) {
+		row += rowShift;
+		col += colShift;
 	}
 	
-	public void move(int rowShift, int colShift) {
-	    row += rowShift;
-	    col += colShift;
-	  }
-	
-	public int getRow() {
-	    return row;
-	  }
-	public int getCol() {
-	    return col;
-	  }
-
+	public void pontua(){
+		score++;
+	}
+	public int getScore(){
+		return score;
+	}
 }

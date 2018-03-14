@@ -1,74 +1,33 @@
 package br.pro.hashi.ensino.desagil.tequilada;
 
-import java.util.Stack;
-
 public class Model {
-	private boolean[][] isVisited;
 	private Board board;
 	private CpuPlayer cpuPlayer;
 	private HumanPlayer humanPlayer;
-	private Stack<Crumb> stack;
+	private Target target;
 
 	public Model() {
 		board = new Board("board.txt");
 
-		cpuPlayer = new CpuPlayer(board.getNumRows() - 1, board.getNumCols() - 1);
+		cpuPlayer = new CpuPlayer(board.getNumRows() - 1, board.getNumCols() - 1, board);
 		humanPlayer = new HumanPlayer(0, 0);
 
-		isVisited = new boolean[board.getNumRows()][board.getNumCols()];
-
-		for(int i = 0; i < board.getNumRows(); i++) {
-			for(int j = 0; j < board.getNumCols(); j++) {
-				isVisited[i][j] = board.isWall(i,  j);
-			}
-		}
-
-		stack = new Stack<>();
-
-		isVisited[cpuPlayer.getRow()][cpuPlayer.getCol()] = true;
-		stack.push(new Crumb(cpuPlayer.getRow(), cpuPlayer.getCol()));
+		target = new Target(4, 14);
+	}
+	
+	public void newGame(){
+		cpuPlayer.restart(board.getNumRows() - 1, board.getNumCols() - 1, board);
+		humanPlayer.restart(0, 0);
 	}
 
 	public void update() {
-		if(!stack.isEmpty()) {
-			Crumb crumb = stack.peek();
-
-			int i = crumb.getRow();
-			int j = crumb.getCol();
-
-			if(i > 0 && !isVisited[i - 1][j]) {
-				cpuPlayer.move(-1, 0);
-				isVisited[cpuPlayer.getRow()][cpuPlayer.getCol()] = true;
-				stack.push(new Crumb(cpuPlayer.getRow(), cpuPlayer.getCol()));
-			}
-			else if(j > 0 && !isVisited[i][j - 1]) {
-				cpuPlayer.move(0, -1);
-				isVisited[cpuPlayer.getRow()][cpuPlayer.getCol()] = true;
-				stack.push(new Crumb(cpuPlayer.getRow(), cpuPlayer.getCol()));
-			}
-			else if(i < board.getNumRows() - 1 && !isVisited[i + 1][j]) {
-				cpuPlayer.move(1, 0);
-				isVisited[cpuPlayer.getRow()][cpuPlayer.getCol()] = true;
-				stack.push(new Crumb(cpuPlayer.getRow(), cpuPlayer.getCol()));
-			}
-			else if(j < board.getNumCols() - 1 && !isVisited[i][j + 1]) {
-				cpuPlayer.move(0, 1);
-				isVisited[cpuPlayer.getRow()][cpuPlayer.getCol()] = true;
-				stack.push(new Crumb(cpuPlayer.getRow(), cpuPlayer.getCol()));
-			}
-			else {
-				stack.pop();
-
-				if(!stack.isEmpty()) {
-					crumb = stack.peek();
-
-					int rowShift = crumb.getRow() - cpuPlayer.getRow();
-					int colShift = crumb.getCol() - cpuPlayer.getCol();
-
-					cpuPlayer.move(rowShift, colShift);
-				}
-			}
+		cpuPlayer.move();
+		if(target.drinked(humanPlayer, cpuPlayer)){
+			newGame();
 		}
+	}
+	public String getScoreString(){
+		return ("Human: " + humanPlayer.getScore() + " x " + cpuPlayer.getScore() + " :CPU");
 	}
 
 	public Board getBoard() {
@@ -79,5 +38,8 @@ public class Model {
 	}
 	public Player getHumanPlayer() {
 		return humanPlayer;
+	}
+	public Target getTarget() {
+		return target;
 	}
 }
