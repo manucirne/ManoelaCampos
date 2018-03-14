@@ -38,6 +38,8 @@ public class Tequilada {
             	// Exibe a janela.
             	frame.setVisible(true);
             	
+            	frame.addKeyListener(controller);
+            	
             	Timer timer = new Timer(1000,controller);
             	
             	timer.start();
