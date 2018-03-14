@@ -40,7 +40,7 @@ public class Tequilada {
             	
             	frame.addKeyListener(controller);
             	
-            	Timer timer = new Timer(1000,controller);
+            	Timer timer = new Timer(100,controller);
             	
             	timer.start();
             	
