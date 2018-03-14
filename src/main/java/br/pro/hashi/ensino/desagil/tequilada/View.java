@@ -1,7 +1,12 @@
 package br.pro.hashi.ensino.desagil.tequilada;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 // Estrutura básica de um componente Swing.
@@ -14,13 +19,57 @@ public class View extends JPanel {
 	private static final int CELL_SIZE = 50;
 
 
-	public View(Model model) {
-		Board board = model.getBoard();
+	private Model model;
+	private Image cpuPlayerImage;
+	private Image humanPlayerImage;
 
-		int numRows = board.getNumRows();
-		int numCols = board.getNumCols();
+
+	public View(Model model) {
+		this.model = model;
+
+		cpuPlayerImage = loadImage("cpuPlayer");
+		humanPlayerImage = loadImage("humanPlayer");
 
 		// Define o tamanho da componente, em pixels.
-		setPreferredSize(new Dimension(numCols * CELL_SIZE, numRows * CELL_SIZE));
+		setPreferredSize(new Dimension(model.getBoard().getNumCols() * CELL_SIZE, model.getBoard().getNumRows() * CELL_SIZE));
 	}
+
+
+	// Método para carregar uma imagem a partir de um nome de arquivo.
+	// Não é necessário entender todos os detalhes nesse momento.
+	private Image loadImage(String filename) {
+		URL url = getClass().getResource("/" + filename + ".png");
+		ImageIcon icon = new ImageIcon(url);
+		return icon.getImage();
+	}
+
+
+	// Método para desenhar uma imagem a partir da posição de um jogador.
+	// Não é necessário entender todos os detalhes nesse momento.
+	private void drawImage(Graphics g, Image image, Player player) {
+		g.drawImage(image, player.getCol() * CELL_SIZE, player.getRow() * CELL_SIZE, CELL_SIZE, CELL_SIZE, null);
+	}
+
+
+	// Método para desenhar a interface gráfica do jogo. A ideia é
+	// que o parâmetro g pode ser usado como o pincel de desenho.
+	@Override
+	public void paintComponent(Graphics g) {
+		g.setColor(Color.WHITE);
+		g.fillRect(0,0,model.getBoard().getNumCols()*CELL_SIZE,model.getBoard().getNumRows()*CELL_SIZE);
+		
+		for(int i = 0; i < model.getBoard().getNumCols(); i++){
+			for(int x = 0; x < model.getBoard().getNumRows(); x++){
+				if (model.getBoard().isWall(x,i) == true){
+					g.setColor(Color.BLACK);
+					g.fillRect(i*CELL_SIZE, x*CELL_SIZE, CELL_SIZE, CELL_SIZE);
+				}
+			}
+		}
+		drawImage(g, cpuPlayerImage, model.getCpuPlayer());
+		drawImage(g, humanPlayerImage, model.getHumanPlayer());
+
+		// Evita bugs visuais em alguns sistemas operacionais.
+		getToolkit().sync();
+    }
 }

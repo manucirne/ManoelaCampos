@@ -1,8 +1,8 @@
 package br.pro.hashi.ensino.desagil.tequilada;
 
 public class Player {
-	private int row;
-	private int col;
+	protected int row;
+	protected int col;
 	
 	public Player(int row, int col){
 		this.row = row;
@@ -17,7 +17,7 @@ public class Player {
 	public int getRow() {
 	    return row;
 	  }
-	  public int getCol() {
+	public int getCol() {
 	    return col;
 	  }
 

@@ -1,32 +1,38 @@
 package br.pro.hashi.ensino.desagil.tequilada;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Board {
-	boolean[][] isWall;
+	private boolean[][] isWall;
+	private int numRows;
+	private int numCols;
 
-	void loadFromFile(String path) {
-		// A instruÃ§Ã£o "try" delimita um trecho no qual erros
+
+	public Board(String path) {
+		// A instrução "try" delimita um trecho no qual erros
 		// graves, que devem ser tratados, podem acontecer.
 		try {
-			// Objetos da classe FileReader nÃ£o possuem o mÃ©todo
-			// readLine, entÃ£o construÃ­mos um objeto da classe
+			// Objetos da classe FileReader não possuem o método
+			// readLine, então construímos um objeto da classe
 			// BufferedReader "em volta" para dar essa capacidade.
 			BufferedReader reader = new BufferedReader(new FileReader(path));
 
-			// LÃª a primeira linha do arquivo e devolve como String.
+			// Lê a primeira linha do arquivo e devolve como String.
 			String line = reader.readLine();
 
-			// Usando espaÃ§os em branco como o critÃ©rio de separaÃ§Ã£o,
-			// quebra a string em pedaÃ§os e devolve um vetor de strings.
+			// Usando espaços em branco como o critério de separação,
+			// quebra a string em pedaços e devolve um vetor de strings.
 			String[] words = line.split(" ");
 
-			// Converte cada um dos dois pedaÃ§os em um inteiro.
-			int numRows = Integer.parseInt(words[0]);
-			int numCols = Integer.parseInt(words[1]);
+			// Converte cada um dos dois pedaços em um inteiro.
+			numRows = Integer.parseInt(words[0]);
+			numCols = Integer.parseInt(words[1]);
 
-			// ConstrÃ³i uma matriz, de acordo com o nÃºmero de colunas
-			// e nÃºmero de linhas lidos do arquivo, e atribui a isWall.
+			// Constrói uma matriz, de acordo com o número de colunas
+			// e número de linhas lidos do arquivo, e atribui a isWall.
 			isWall = new boolean[numRows][numCols];
 
 			// Para cada uma das linhas restantes do arquivo...
@@ -63,4 +69,15 @@ public class Board {
 		}
 	}
 
+
+	public int getNumRows() {
+		return numRows;
+	}
+	public int getNumCols() {
+		return numCols;
+	}
+	public boolean isWall(int row, int col){
+		return isWall[row][col];
+	}
+	
 }
